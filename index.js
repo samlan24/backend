@@ -55,6 +55,18 @@ app.delete('/api/persons/:id', (req, res) => {
     res.status(204).end()
 })
 
+const generateID = () => {
+    let id;
+    const idRange = 1000000;
+    const existingIds = people.map(person => person.id)
+
+    do {
+        id = Math.floor(Math.random() * idRange) + 1;
+    } while (existingIds.includes(id));
+
+    return String(id);
+}
+
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
