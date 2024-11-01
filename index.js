@@ -1,8 +1,8 @@
 const express = require('express');
+
 const app = express();
 
 app.use(express.json());
-
 
 let people = [
     {
@@ -26,7 +26,6 @@ let people = [
       "number": "39-23-6423122"
     }
 ]
-
 
 app.get('/api/persons', (req, res) => {
     res.json(people)
@@ -66,6 +65,27 @@ const generateID = () => {
 
     return String(id);
 }
+
+app.post('/api/persons', (req, res) => {
+    const { name, number } = req.body;
+
+    if (!name || !number) {
+        return res.status(400).json({ error: 'Name or number is missing' });
+    }
+
+    if (people.find(person => person.name === name)) {
+        return res.status(400).json({ error: 'Name already exists in the phonebook' });
+    }
+
+    const newPerson = {
+        id: generateID(),
+        name,
+        number
+    };
+
+    people = people.concat(newPerson);
+    res.status(201).json(newPerson);
+})
 
 const PORT = 3001
 app.listen(PORT, () => {
