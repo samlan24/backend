@@ -1,7 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 
 const app = express();
+
+app.use(cors({
+    origin: 'https://full-stack-development-g1gc.vercel.app'
+}));
 
 app.use(express.json());
 morgan.token('body', (req, res) => JSON.stringify(req.body));
